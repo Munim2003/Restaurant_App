@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RestaurantDAO {
     @Query("SELECT * FROM restaurant")
-    suspend fun getAll(): Flow<List<Restaurant>>
+    fun getAll(): Flow<List<Restaurant>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(restaurant: Restaurant)
