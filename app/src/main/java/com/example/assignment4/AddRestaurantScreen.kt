@@ -33,24 +33,36 @@ fun AddRestaurantScreen(modifier: Modifier) {
     var ratingText by rememberSaveable{ mutableStateOf("") }
     val viewModel = viewModel{ AddRestaurantVM(MyApp.repository) }
 
-    Surface(modifier = modifier.fillMaxSize().padding(16.dp), shape = RoundedCornerShape(10.dp), shadowElevation = 30.dp) {
-        Column(Modifier.fillMaxSize().padding(6.dp)) {
+    Surface(modifier = Modifier.fillMaxSize().padding(16.dp), shape = RoundedCornerShape(10.dp), shadowElevation = 30.dp) {
+        Column(Modifier.fillMaxSize().padding(12.dp)) {
+            Text(
+                "Add Restaurant",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF5C6BC0),
+
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             TextField(
                 value = nameText,
                 onValueChange = {nameText=it},
                 label = {Text("Name")},
             )
+            Spacer(modifier = Modifier.height(8.dp))
             TextField(
                 value = locationText,
                 onValueChange = {locationText=it},
                 label = {Text("Location")},
             )
+            Spacer(modifier = Modifier.height(8.dp))
             TextField(
                 value = ratingText,
                 onValueChange = {ratingText=it},
                 label = {Text("Rating")},
             )
-            Button(onClick = {viewModel.addRestaurant(nameText, locationText, ratingText.toDouble())}) {Text("Add") }
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(onClick = {viewModel.addRestaurant(nameText, locationText, ratingText.toDoubleOrNull() ?: 0.0)}) {Text("Add") }
         }
     }
 }

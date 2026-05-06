@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -23,6 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -50,39 +52,45 @@ class MainActivity : ComponentActivity() {
                         route = "AddRestaurantScreen"
                     ),
                 )
-                var selectedItemIndex by rememberSaveable { mutableStateOf(0) }
                 val navHostController = rememberNavController()
                 val navBackStackEntry by navHostController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
 
 
                     Scaffold(
-                        bottomBar = {
-                            NavigationBar {
-                                navItemsList.forEachIndexed { index, item ->
-                                    NavigationBarItem(
-                                        selected = currentDestination?.hierarchy?.any { it.route.equals(item.route) } == true,
-                                        onClick = {
-                                            selectedItemIndex = index
-                                            navHostController.navigate(item.route) {
-                                                launchSingleTop = true
-                                                restoreState = true
-                                                popUpTo(navHostController.graph.findStartDestination().id) { saveState = true }
+                        floatingActionButton = {MyFab(navHostController)},
+                        topBar = { MyTopAppBar(navHostController) },
+                            bottomBar = {
+                                NavigationBar {
+                                    navItemsList.forEach { item ->
+                                        NavigationBarItem(
+                                            selected = currentDestination?.route == item.route,
+                                            onClick = {
+                                                navHostController.navigate(item.route) {
+                                                    launchSingleTop = true
+                                                    restoreState = true
+                                                    popUpTo(navHostController.graph.findStartDestination().id) {
+                                                        saveState = false
+                                                    }
+                                                }
+                                            },
+                                            label = { Text(text = item.title) },
+                                            icon = {
+                                                Icon(
+                                                    contentDescription = item.title,
+                                                    imageVector = if (currentDestination?.route == item.route)
+                                                        item.iconSelected
+                                                    else
+                                                        item.iconUnselected
+                                                )
                                             }
-                                        },
-                                        label = { Text(text = item.title) },
-                                        icon = { Icon(contentDescription = item.title,
-                                            imageVector = if (index == selectedItemIndex) item.iconSelected
-                                            else item.iconUnselected
                                         )
-                                        }
-                                    )
+                                    }
                                 }
-                            }
-                        }
 
+                        }
                     ) {
-                        innerPadding -> Nav(modifier = Modifier.padding(innerPadding), navHostController)
+                        innerPadding -> Nav(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding(), top = innerPadding.calculateTopPadding()), navHostController)
 
                 }
             }

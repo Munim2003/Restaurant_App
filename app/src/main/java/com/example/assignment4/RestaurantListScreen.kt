@@ -24,24 +24,51 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun RestaurantListScreen(modifier: Modifier = Modifier){
-    val viewModel = viewModel{ RestaurantListVM(MyApp.repository) }
+fun RestaurantListScreen(modifier: Modifier) {
+    val viewModel = viewModel { RestaurantListVM(MyApp.repository) }
     val restaurant by viewModel.restaurants.collectAsState()
+    val showRating by viewModel.showRating.collectAsState()
 
-    Surface(modifier = modifier.fillMaxSize().padding(16.dp), shape = RoundedCornerShape(10.dp), shadowElevation = 30.dp) {
+    Surface(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        shape = RoundedCornerShape(10.dp),
+        shadowElevation = 30.dp
+    ) {
         LazyColumn(Modifier.fillMaxSize().padding(6.dp)) {
-            item{Text("Restaurants", fontSize = 32.sp,fontWeight = FontWeight.Bold, color = Color(0xFF5C6BC0) )}
-            item{Spacer(modifier = Modifier.height(13.dp))}
-            items(restaurant){
-                restaurant -> Surface(modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp), color = Color(0xFFEEEEEE)) {
+            item {
+                Text(
+                    "Restaurants",
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF5C6BC0)
+                )
+            }
+            item { Spacer(modifier = Modifier.height(13.dp)) }
+            items(restaurant) { restaurant ->
+                Surface(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(8.dp)) {
-                        Text(restaurant.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color(0xFF5C6BC0))
-                        Text("Location: ${restaurant.location}", color =  Color.Magenta, fontSize = 18.sp)
-                        Text("Rating: $${"%.2f".format(restaurant.rating)}", color =  Color.Magenta, fontSize = 18.sp)
+                        Text(
+                            restaurant.name,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF5C6BC0)
+                        )
+                        Text(
+                            "Location: ${restaurant.location}",
+                            color = Color.Magenta,
+                            fontSize = 18.sp
+                        )
+                        if(showRating) {
+                            Text(
+                                "Rating: ${"%.1f".format(restaurant.rating)}",
+                                color = Color.Magenta,
+                                fontSize = 18.sp
+                            )
+                        }
                     }
+
+                    Spacer(modifier = Modifier.height(6.dp))
                 }
-                Spacer(modifier = Modifier.height(6.dp))
             }
         }
     }

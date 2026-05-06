@@ -12,5 +12,6 @@ fun Nav(modifier: Modifier, navController: NavHostController) {
     NavHost(navController, startDestination = "RestaurantListScreen", modifier) {
         composable(route = "RestaurantListScreen") { RestaurantListScreen(modifier) }
         composable(route = "AddRestaurantScreen") { AddRestaurantScreen(modifier) }
+        composable(route = "SettingsScreen") { SettingsScreen(modifier) }
     }
 }
