@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -33,11 +34,15 @@ android {
     buildFeatures {
         compose = true
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
+    implementation(libs.core.ktx)
     val lifecycle_version = "2.8.7"
-    val room_version = "2.7.0-alpha01"
+    val room_version = "2.6.1"
 
     // Room
     implementation("androidx.room:room-runtime:$room_version")

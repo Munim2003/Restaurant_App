@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -22,21 +24,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun RestaurantListScreen(modifier: Modifier = Modifier, navHostController: NavHostController){
+fun RestaurantListScreen(modifier: Modifier = Modifier){
     val viewModel = viewModel{ RestaurantListVM(MyApp.repository) }
+    val restaurant by viewModel.restaurants.collectAsState()
 
     Surface(modifier = modifier.fillMaxSize().padding(16.dp), shape = RoundedCornerShape(10.dp), shadowElevation = 30.dp) {
         LazyColumn(Modifier.fillMaxSize().padding(6.dp)) {
             item{Text("Restaurants", fontSize = 32.sp,fontWeight = FontWeight.Bold, color = Color(0xFF5C6BC0) )}
             item{Spacer(modifier = Modifier.height(13.dp))}
-            items(viewModel.restaurants.value){
-                restaurant -> Surface(modifier = Modifier.fillMaxWidth().clickable{
-                    navHostController.navigate("RestaurantDetailScreen")
-                }, shape = RoundedCornerShape(10.dp), color = Color(0xFFEEEEEE)) {
+            items(restaurant){
+                restaurant -> Surface(modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp), color = Color(0xFFEEEEEE)) {
                     Column(modifier = Modifier.padding(8.dp)) {
                         Text(restaurant.name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color(0xFF5C6BC0))
-                        Text("Hours Worked: ${restaurant.location}", color =  Color.Magenta, fontSize = 18.sp)
-                        Text("Rate: $${"%.2f".format(restaurant.rating)}", color =  Color.Magenta, fontSize = 18.sp)
+                        Text("Location: ${restaurant.location}", color =  Color.Magenta, fontSize = 18.sp)
+                        Text("Rating: $${"%.2f".format(restaurant.rating)}", color =  Color.Magenta, fontSize = 18.sp)
                     }
                 }
                 Spacer(modifier = Modifier.height(6.dp))
