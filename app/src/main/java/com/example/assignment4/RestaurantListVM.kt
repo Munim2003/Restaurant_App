@@ -20,10 +20,11 @@ class RestaurantListVM(private val repository: RestaurantRepository) : ViewModel
         initialValue = emptyList()
     )
 
-    val showRating: StateFlow<Boolean> = repository.getShowRating()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = true
-        )
+    val showRating: StateFlow<Boolean> = flow {
+        emitAll(repository.getShowRating())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = true
+    )
 }

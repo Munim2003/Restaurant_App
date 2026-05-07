@@ -17,8 +17,6 @@ class MyApp : Application() {
                 this@MyApp.applicationContext,
                 RestaurantDatabase::class.java, "restaurant"
             ).build()
-
-
         }
         val myPreferences = MyPreferences(this)
         repository = RestaurantRepository(db.restaurantDao()!!, myPreferences)
@@ -31,7 +29,6 @@ class MyApp : Application() {
             repository.insert(Restaurant(name = "Secret Thai Kitchen", location = "Freeport", rating = 4.0))
             repository.insert(Restaurant(name = "Cafe Continental", location = "Manhasset", rating = 4.0))
             repository.insert(Restaurant(name = "Friendly's", location = "Stony Brook", rating = 2.5))
-
         }
     }
 }

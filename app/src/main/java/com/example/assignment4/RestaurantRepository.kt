@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 class RestaurantRepository(private val restaurantDao: RestaurantDAO, private val myPreferences: MyPreferences) {
 
 
-    fun getAll() : Flow<List<Restaurant>>{
+    suspend fun getAll() : Flow<List<Restaurant>>{
         return restaurantDao.getAll()
     }
     suspend fun insert(restaurant: Restaurant){
@@ -19,9 +19,8 @@ class RestaurantRepository(private val restaurantDao: RestaurantDAO, private val
     suspend fun setShowRating(value: Boolean) {
         myPreferences.setShowRating(value)
     }
-    fun getShowRating(): Flow<Boolean> {
+    suspend fun getShowRating(): Flow<Boolean> {
         return myPreferences.getShowRating()
     }
-
 
     }

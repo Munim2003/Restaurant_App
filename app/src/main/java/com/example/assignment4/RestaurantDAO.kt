@@ -14,4 +14,5 @@ interface RestaurantDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(restaurant: Restaurant)
 
+
 }

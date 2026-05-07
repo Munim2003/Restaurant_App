@@ -40,13 +40,13 @@ class MainActivity : ComponentActivity() {
             Assignment4Theme {
                 val navItemsList = listOf(
                     MyNavItem(
-                        title = "Home",
+                        title = "Restaurants",
                         iconSelected = Icons.Filled.Home,
                         iconUnselected = Icons.Outlined.Home,
                         route = "RestaurantListScreen"
                     ),
                     MyNavItem(
-                        title = "Add",
+                        title = "Add Restaurant",
                         iconSelected = Icons.Filled.Add,
                         iconUnselected = Icons.Outlined.Add,
                         route = "AddRestaurantScreen"
